@@ -1,6 +1,6 @@
 // TODO Step 7 import "./game.component.html"
 
- // TODO Step 7 remove this closure
+(function() {    // TODO Step 7 remove this closure
     var environment = {
         api: {
             host: 'http://localhost:8081'
@@ -184,5 +184,5 @@
     // put component in global scope, tu be runnable right from the HTML.
     // TODO Step 7: export GameComponent
     window.GameComponent = GameComponent;
-
+})();
 
