@@ -11,17 +11,17 @@
         }
 
         init() {
-            var form = document.querySelector('form.form-signin');
+            let form = document.querySelector('form.form-signin');
     
-            form.addEventListener('submit', function(event) {     // TODO Step 3.2: use arrow function
+            form.addEventListener('submit', (event) =>{     // TODO Step 3.2: use arrow function
     
                 event.preventDefault();
                 if (form.checkValidity() === false) {
                     event.stopPropagation();
                     form.classList.add('was-validated');
                 } else {
-                    var name = event.srcElement.querySelector('#nickname').value;
-                    var size = parseInt(event.srcElement.querySelector('#size').value);
+                    let name = event.srcElement.querySelector('#nickname').value;
+                    let size = parseInt(event.srcElement.querySelector('#size').value);
     
                     _startGame(name, size);
                 }
@@ -37,7 +37,7 @@
     function _startGame(name, size) {
         // TODO Step 3.2: use template literals
         // TODO Step 7: change path to: `game?name=${name}=name&size=${size}`
-        window.location = '../game/game.component.html?name=' + name + '&size=' + size;
+        window.location = `../game/game.component.html?name=${name}&size=${size}`;
     }
 
     // put component in global scope, tu be runnable right from the HTML.
