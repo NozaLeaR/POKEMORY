@@ -20,26 +20,24 @@
             this._matchedPairs = 0;
         }
 
-        init() {
+        async init() {
             // fetch the cards configuration from the server
-            this.fetchConfig(((config) => { // TODO Step 3.2: use arrow function
-                this._config = config;
+            const config = await this.fetchConfig();
+            // TODO Step 3.2: use arrow function
+            // create a card out of the config
+            // TODO Step 3.3: use Array.map()
+            this._cards = config.ids.map(x => new CardComponent(x));
 
-                // create a card out of the config
-                // TODO Step 3.3: use Array.map()
-                this._cards = this._config.ids.map(x => new CardComponent(x));
+            this._boardElement = document.querySelector('.cards');
 
+            this._cards.forEach( // TODO Step 3.3: use Array.forEach()
+                ((x) => {
+                    let card = x;
+                    this._boardElement.appendChild(card.getElement());
+                    card.getElement().addEventListener('click', () => { this._flipCard(card) }); // TODO use arrow function.
+                }));
+            this.start();
 
-                this._boardElement = document.querySelector('.cards');
-
-                this._cards.forEach( // TODO Step 3.3: use Array.forEach()
-                    ((x) => {
-                        let card = x;
-                        this._boardElement.appendChild(card.getElement());
-                        card.getElement().addEventListener('click', () => { this._flipCard(card) }); // TODO use arrow function.
-                    }));
-                this.start();
-            }));
         }
 
         start() {
@@ -66,31 +64,14 @@
             // TODO Step 3.2: Why bind(this)?
         }
 
-        fetchConfig(cb) {
-            let xhr = typeof XMLHttpRequest != 'undefined'
-                ? new XMLHttpRequest()
-                : new ActiveXObject('Microsoft.XMLHTTP');
-
-            // TODO Step 3.2 use template literals
-            xhr.open('get', `${environment.api.host}/board?size=${this._size}`, true);
-
-            // TODO Step 3.2 use arrow function
-            xhr.onreadystatechange = function () {
-                let status;
-                let data;
-                // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
-                if (xhr.readyState == 4) { // `DONE`
-                    status = xhr.status;
-                    if (status == 200) {
-                        data = JSON.parse(xhr.responseText);
-                        cb(data);
-                    } else {
-                        throw new Error(status)
-                    }
-                }
-            };
-            xhr.send();
+        async fetchConfig() {
+            return fetch(`${environment.api.host}/board?size=${this._size}`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .catch(error => console.log("Fetch config error", error));
         }
+
 
         _flipCard(card) {
             if (this._busy) {
@@ -157,10 +138,10 @@
         // TODO Step 3.3: Use Array.map() & Array.reduce()
 
         result = parts.map(kv => kv.split('='))
-        .reduce((acc,kv)=> {
-            acc[kv[0]]=kv[1];
-            return acc;
-        },{})
+            .reduce((acc, kv) => {
+                acc[kv[0]] = kv[1];
+                return acc;
+            }, {})
 
         return result;
     }
