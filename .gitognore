@@ -1,1 +1,2 @@
-.setup/gront-end/nodes_modules
+./setup/front-end/nodes_modules
+.setup/front-end/dist
