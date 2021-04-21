@@ -1,6 +1,6 @@
 // TODO Step 7 import "./game.component.html"
 
-(function() {    // TODO Step 7 remove this closure
+(function () {    // TODO Step 7 remove this closure
     let environment = {
         api: {
             host: 'http://localhost:8081'
@@ -9,8 +9,8 @@
 
     // TODO Step 3.1 create a class
     /* class GameComponent constructor */
-    class GameComponent{
-        constructor(id){
+    class GameComponent {
+        constructor(id) {
             // gather parameters from URL
             let params = parseUrl();
             // save player name & game ize
@@ -22,25 +22,22 @@
 
         init() {
             // fetch the cards configuration from the server
-            this.fetchConfig(((config) =>{ // TODO Step 3.2: use arrow function
+            this.fetchConfig(((config) => { // TODO Step 3.2: use arrow function
                 this._config = config;
-    
+
                 // create a card out of the config
-                this._cards = []; // TODO Step 3.3: use Array.map()
-                for (let i in this._config.ids) {
-                    this._cards[i] = new CardComponent(this._config.ids[i]);
-                }
-    
+                // TODO Step 3.3: use Array.map()
+                this._cards = this._config.ids.map(x => new CardComponent(x));
+
+
                 this._boardElement = document.querySelector('.cards');
-                
-                for (let i in this._cards) { // TODO Step 3.3: use Array.forEach()
-                    (() => {
-                        let card = this._cards[i];
+
+                this._cards.forEach( // TODO Step 3.3: use Array.forEach()
+                    ((x) => {
+                        let card = x;
                         this._boardElement.appendChild(card.getElement());
-                        card.getElement().addEventListener('click', () =>{this._flipCard(card) }); // TODO use arrow function.
-                    })();
-                }
-    
+                        card.getElement().addEventListener('click', () => { this._flipCard(card) }); // TODO use arrow function.
+                    }));
                 this.start();
             }));
         }
@@ -50,35 +47,35 @@
             let seconds = 0;
             // TODO Step 3.2: use template literals
             document.querySelector('nav .navbar-title').textContent = `Player: ${this._name}. Elapsed time:${seconds++}`;
-    
+
             this._timer = setInterval(() => { // TODO Step 3.2: use arrow function
                 // TODO Step 3.2: use template literals
                 document.querySelector('nav .navbar-title').textContent = `Player: ${this._name}. Elapsed time:${seconds++}`;
             }, 1000);
         }
 
-         gotoScore() {
-            let timeElapsedInSeconds = Math.floor((Date.now() - this._startTime )/1000);
+        gotoScore() {
+            let timeElapsedInSeconds = Math.floor((Date.now() - this._startTime) / 1000);
             clearInterval(this._timer);
-    
-            setTimeout(() => {window.location = `../score/score.component.html?name=${this._name}&size=${this._size}&time=${timeElapsedInSeconds}`;}, 750);
-              // TODO Step 3.2: use arrow function.
-                // TODO Step 1: replace with '../score.component.html' location
-                // TODO Step 3.2: use template literals
-                // TODO Step 7: change path to: `score?name=${this._name}&size=${this._size}'&time=${timeElapsedInSeconds}`;
-                // TODO Step 3.2: Why bind(this)?
+
+            setTimeout(() => { window.location = `../score/score.component.html?name=${this._name}&size=${this._size}&time=${timeElapsedInSeconds}`; }, 750);
+            // TODO Step 3.2: use arrow function.
+            // TODO Step 1: replace with '../score.component.html' location
+            // TODO Step 3.2: use template literals
+            // TODO Step 7: change path to: `score?name=${this._name}&size=${this._size}'&time=${timeElapsedInSeconds}`;
+            // TODO Step 3.2: Why bind(this)?
         }
-    
-         fetchConfig(cb) {
+
+        fetchConfig(cb) {
             let xhr = typeof XMLHttpRequest != 'undefined'
                 ? new XMLHttpRequest()
                 : new ActiveXObject('Microsoft.XMLHTTP');
-    
+
             // TODO Step 3.2 use template literals
             xhr.open('get', `${environment.api.host}/board?size=${this._size}`, true);
-    
+
             // TODO Step 3.2 use arrow function
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 let status;
                 let data;
                 // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
@@ -95,41 +92,41 @@
             xhr.send();
         }
 
-         _flipCard(card) {
+        _flipCard(card) {
             if (this._busy) {
                 return;
             }
-    
+
             if (card.flipped) {
                 return;
             }
-    
-    
+
+
             // flip the card
             card.flip();
-    
+
             // if flipped first card of the pair
             if (!this._flippedCard) {
                 // keep this card flipped, and wait for the second card of the pair
                 this._flippedCard = card;
             } else {
                 // second card of the pair flipped...
-    
+
                 // if cards are the same
                 if (card.equals(this._flippedCard)) {
                     this._flippedCard.matched = true;
                     card.matched = true;
                     this._matchedPairs += 1;
-    
+
                     // reset flipped card for the next turn.
                     this._flippedCard = null;
-    
+
                     if (this._matchedPairs === this._size) {
                         this.gotoScore();
                     }
                 } else {
                     this._busy = true;
-    
+
                     // cards did not match
                     // wait a short amount of time before hiding both cards
                     // TODO Step 3.2 use arrow function
@@ -138,7 +135,7 @@
                         this._flippedCard.flip();
                         card.flip();
                         this._busy = false;
-    
+
                         // reset flipped card for the next turn.
                         this._flippedCard = null;
                     }, 500);
@@ -148,21 +145,22 @@
     }
 
     // TODO Step 6 implement getTemplate() {}
-    
+
     function parseUrl() {
         let url = window.location;
         let query = url.href.split('?')[1] || '';
         let delimiter = '&';
-        let result = {};
+        let result = [];
 
         let parts = query
             .split(delimiter);
         // TODO Step 3.3: Use Array.map() & Array.reduce()
-        for (let i in parts) {
-            let item = parts[i];
-            let kv = item.split('=');
-            result[kv[0]] = kv[1];
-        }
+
+        result = parts.map(kv => kv.split('='))
+        .reduce((acc,kv)=> {
+            acc[kv[0]]=kv[1];
+            return acc;
+        },{})
 
         return result;
     }

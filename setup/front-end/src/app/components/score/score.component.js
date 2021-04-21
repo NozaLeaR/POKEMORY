@@ -29,11 +29,11 @@
         let parts = query
             .split(delimiter);
         // TODO Step 3.3: Use Array.map() & Array.reduce()
-        for (let i in parts) {
-            let item = parts[i];
-            let kv = item.split('=');
-            result[kv[0]] = kv[1];
-        }
+        result = parts.map(kv => kv.split('='))
+        .reduce((acc,kv)=> {
+            acc[kv[0]]=kv[1];
+            return acc;
+        },{})
 
         return result;
     }
