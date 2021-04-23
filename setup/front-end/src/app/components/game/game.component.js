@@ -82,7 +82,6 @@
                 return;
             }
 
-
             // flip the card
             card.flip();
 
