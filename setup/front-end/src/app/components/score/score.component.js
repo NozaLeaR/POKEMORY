@@ -1,4 +1,5 @@
 // TODO Step 7 import "./score.component.html"
+import { parseUrl } from '../../utils/utils';
 
 (function() {      // TODO Step 7 remove this closure
 
@@ -20,23 +21,6 @@
 
     // TODO Step 6 implement getTemplate() {}
 
-    function parseUrl() {
-        let url = window.location;
-        let query = url.href.split('?')[1] || '';
-        let delimiter = '&';
-        let result = {};
-
-        let parts = query
-            .split(delimiter);
-        // TODO Step 3.3: Use Array.map() & Array.reduce()
-        result = parts.map(kv => kv.split('='))
-        .reduce((acc,kv)=> {
-            acc[kv[0]]=kv[1];
-            return acc;
-        },{})
-
-        return result;
-    }
 
     // put component in global scope, tu be runnable right from the HTML.
     // TODO Step 7 export ScoreComponent
