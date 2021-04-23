@@ -1,6 +1,6 @@
 // TODO Step 7 import "./card.component.html"
 
-(function() {   // TODO Step 7 remove this closure
+// TODO Step 7 remove this closure
 
     class CardComponent {   
         constructor(id) {
@@ -56,4 +56,4 @@
     // put component in global scope, tu be runnable right from the HTML.
     // TODO Step 7 export CardComponent
     window.CardComponent = CardComponent;
-})();
+

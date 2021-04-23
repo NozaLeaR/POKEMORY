@@ -1,7 +1,7 @@
 // TODO Step 7 import "./game.component.html"
 import { parseUrl } from '../../utils/utils';
 
-(function () {    // TODO Step 7 remove this closure
+   // TODO Step 7 remove this closure
     let environment = {
         api: {
             host: 'http://localhost:8081'
@@ -131,5 +131,5 @@ import { parseUrl } from '../../utils/utils';
     // put component in global scope, tu be runnable right from the HTML.
     // TODO Step 7: export GameComponent
     window.GameComponent = GameComponent;
-})();
+
 
