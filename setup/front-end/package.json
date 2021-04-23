@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server"
-
+    "start": "webpack serve"
   },
   "author": "",
   "license": "ISC",
