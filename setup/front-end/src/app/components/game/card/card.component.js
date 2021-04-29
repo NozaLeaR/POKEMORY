@@ -1,4 +1,5 @@
-import './card.component.css';
+import './card.component.scss';
+import './card.component.html';
 import template from './card.component.html';
 import { Component } from '../../../utils/component';
 
@@ -12,8 +13,6 @@ export class CardComponent extends Component {
         this.matched = false;
         this._id = id;
 
-        // TODO Step 7: We can access the element from the component class that built an element from the template
-        // TODO Step 7: don't use document.getElementById anymore
 
         const elt = super.getElement();
         this._imageElt = elt.querySelector('.card-wrapper');

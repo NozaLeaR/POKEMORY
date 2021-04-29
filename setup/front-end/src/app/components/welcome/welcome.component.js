@@ -1,46 +1,42 @@
-// TODO Step 7 import "./welcome.component.html"
 
-(function() {   // TODO Step 7 remove this closure
+import { Component } from '../../utils/component';
+import template from "./welcome.component.html";
+import "./welcome.component.html";
+import "./welcome.component.scss";
 
-    // TODO Step 3.1 create a class
-    /* class WelcomeComponent constructor  */
-    class WelcomeComponent {
-        
-        constructor(id){
 
-        }
+/* class WelcomeComponent constructor  */
+export class WelcomeComponent extends Component {
 
-        init() {
-            let form = document.querySelector('form.form-signin');
-    
-            form.addEventListener('submit', (event) =>{     // TODO Step 3.2: use arrow function
-    
-                event.preventDefault();
-                if (form.checkValidity() === false) {
-                    event.stopPropagation();
-                    form.classList.add('was-validated');
-                } else {
-                    let name = event.srcElement.querySelector('#nickname').value;
-                    let size = parseInt(event.srcElement.querySelector('#size').value);
-    
-                    _startGame(name, size);
-                }
-            }, false);
-    
-            return this;
-        }
+    constructor(id) {
+        super('welcome')
     }
 
+    init() {
+        let form = document.querySelector('form.form-signin');
 
-    // TODO Step 6 implement getTemplate() {}
+        form.addEventListener('submit', (event) => {  
 
-    function _startGame(name, size) {
-        // TODO Step 3.2: use template literals
-        // TODO Step 7: change path to: `game?name=${name}=name&size=${size}`
-        window.location = `../game/game.component.html?name=${name}&size=${size}`;
+            event.preventDefault();
+            if (form.checkValidity() === false) {
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            } else {
+                let name = event.srcElement.querySelector('#nickname').value;
+                let size = parseInt(event.srcElement.querySelector('#size').value);
+
+                _startGame(name, size);
+            }
+        }, false);
+
+        return this;
     }
 
-    // put component in global scope, tu be runnable right from the HTML.
-    // TODO Step 7 export WelcomeComponent
-    window.WelcomeComponent = WelcomeComponent
-})();
+    getTemplate() {
+        return template;
+    }
+}
+
+function _startGame(name, size) {
+    window.location.hash = `game?name=${name}=name&size=${size}`;
+}

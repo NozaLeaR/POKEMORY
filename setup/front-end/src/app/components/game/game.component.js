@@ -1,11 +1,12 @@
-// TODO Step 7 import "./game.component.html"
+
 import { Component } from '../../utils/component';
 import { parseUrl } from '../../utils/utils';
-import template from "./game.component.html"
-import {CardComponent} from "./card/card.component.js"
-import "./game.component.html"
+import template from "./game.component.html";
+import {CardComponent} from "./card/card.component.js";
+import "./game.component.scss";
+import "./game.component.html";
 
-// TODO Step 7 remove this closure
+
 let environment = {
     api: {
         host: 'http://localhost:8081'
@@ -64,13 +65,13 @@ export class GameComponent extends Component {
     }
 
     gotoScore() {
-        let timeElapsedInSeconds = Math.floor((Date.now() - this._startTime) / 1000);
+        const timeElapsedInSeconds = Math.floor(
+          (Date.now() - this._startTime) / 1000
+        );
+        setTimeout(() => window.location.hash = `score?name=${this._name}&size=${this._size}'&time=${timeElapsedInSeconds}`, 750);
         clearInterval(this._timer);
-
-        setTimeout(() => { window.location = `score?name=${this._name}&size=${this._size}'&time=${timeElapsedInSeconds}`; }, 750);
-        // TODO Step 7: change path to: `score?name=${this._name}&size=${this._size}'&time=${timeElapsedInSeconds}`;
     }
-
+      
     async fetchConfig() {
         return fetch(`${environment.api.host}/board?size=${this._size}`, {
             method: "GET"
