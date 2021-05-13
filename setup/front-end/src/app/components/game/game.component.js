@@ -12,8 +12,6 @@ let environment = {
         host: 'http://localhost:8081'
     }
 };
-
-// TODO Step 3.1 create a class
 /* class GameComponent constructor */
 export class GameComponent extends Component {
     constructor(id) {
@@ -35,14 +33,12 @@ export class GameComponent extends Component {
     async init() {
         // fetch the cards configuration from the server
         const config = await this.fetchConfig();
-        // TODO Step 3.2: use arrow function
         // create a card out of the config
-        // TODO Step 3.3: use Array.map()
         this._cards = config.ids.map(x => new CardComponent(x));
 
         this._boardElement = document.querySelector('.cards');
 
-        this._cards.forEach( // TODO Step 3.3: use Array.forEach()
+        this._cards.forEach(
             ((x) => {
                 let card = x;
                 this._boardElement.appendChild(card.getElement());
@@ -55,11 +51,9 @@ export class GameComponent extends Component {
     start() {
         this._startTime = Date.now();
         let seconds = 0;
-        // TODO Step 3.2: use template literals
         document.querySelector('nav .navbar-title').textContent = `Player: ${this._name}. Elapsed time:${seconds++}`;
 
-        this._timer = setInterval(() => { // TODO Step 3.2: use arrow function
-            // TODO Step 3.2: use template literals
+        this._timer = setInterval(() => {
             document.querySelector('nav .navbar-title').textContent = `Player: ${this._name}. Elapsed time:${seconds++}`;
         }, 1000);
     }
@@ -117,7 +111,6 @@ export class GameComponent extends Component {
 
                 // cards did not match
                 // wait a short amount of time before hiding both cards
-                // TODO Step 3.2 use arrow function
                 setTimeout(() => {
                     // hide the cards
                     this._flippedCard.flip();
